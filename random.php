@@ -19,8 +19,8 @@ var ARR_C = 0;
 var ARR_I = 0;
 
 function doit() {
-    var arrs = '<?php echo getJSON(); ?>';
-    ARR_G  = JSON.parse(arrs);
+    var arrs = <?php echo getJSON(); ?>;
+    ARR_G  = arrs; // JSON.parse(arrs);
     ARR_C  = ARR_G.length;
     pop1();
 }
@@ -38,7 +38,9 @@ function pop1() {
     var	dateReadable = dateObject.toString();
     byid('date').innerHTML = 'created: ' + dateReadable + ' (+' + arr[j].dateData.uonly + 's)';
     
-    byid('seq').innerHTML  = 'seq #' + arr[j]['seq'];
+    const seq1 = 'seq #' + arr[j]['seq'];
+    byid('seq1').innerHTML  = seq1;
+    byid('seq2').innerHTML  = seq1;
     byid('seqspan').innerHTML = ' since ' + new Date(arr[j].seq_since_mstime).toString();
     byid('cset').innerHTML  = ARR_C - j + ' / ' + ARR_C;
     byid('isIP').innerHTML = (arr[j]['isIP'] ? '' : 'NOT '  ) + 'from your IP address'
@@ -71,8 +73,11 @@ function goforward() {
 </div>
 
 <div id='date'></div>
-<div style='margin-top: 2ex' ><span id='seq'></span><span id='seqspan' style = 'font-size: 80%'></span></div>
-<div id='isIP' ></div>
+<div style='margin-top: 0.2ex' >
+    <span id='seq1'></span>
+    <span id='isIP' ></span>
+</div>
+
 
 <div id='cset' style='margin-top: 2ex'></div>
 <div style='padding: 0; margin-bottom: -0.5ex; margin-top: -0.5ex; font-size: 500%'>
@@ -94,6 +99,10 @@ function goforward() {
 <li id='e9'></li>
 
 </ol>
+
+<div>
+    <span id='seq2'></span><span id='seqspan' style = 'font-size: 70%; opacity: 0.7'></span>
+</div>
 
 <p><a href='random.html'>original JS-only</a></p>
 

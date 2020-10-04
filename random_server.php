@@ -1,7 +1,7 @@
 <?php
 
-set_include_path('/opt/composer');
-require_once('vendor/autoload.php');
+require_once('/opt/kwynn/kwutils.php');
+require_once('seq2.php');
 
 function myri($max) { return random_int(1, $max); }
 
@@ -24,15 +24,27 @@ function myra($optin = false, $max = 100) {
 
 function mymicrotime() {
     $dateo = new DateTime();
-    $r['phpdateo'] = $dateo;
     $s = $dateo->format('U.u');
     $r['utimes'] = $s;
-    $r['itime'] = intval($dateo->format('U'));
+    $ts         = intval($dateo->format('U'));
+    $r['itime'] = $ts;
     $f =  floatval($s);
     $r['utimef'] = $f;
-    $r['uonly']  = floatval('0.' . $dateo->format('u'));
-    $r['mstime'] = intval(round($f * 1000));
-    
+    $uonlyf = floatval('0.' . $dateo->format('u'));
+    $r['uonly']  = $uonlyf;
+    $pow6 =  pow(10,6);
+    $pow3 =  pow(10,3);
+    $uonlyi      = intval(round($uonlyf * $pow6, 6));
+    $utimei = $ts * $pow6 + $uonlyi;
+    $r['utimei']  = $utimei;
+    $r['mstime'] = intval(floor(($ts + $uonlyf) * $pow3));
+    $tsc = rdtscp();
+    $tick = $tsc[0];
+    $r['cpun'] = $tsc[1];
+    $r['tick'] = $tick;
+    $r['isaws'] = isAWS();
+    $r['datv']  = 2;
+    $r['r']     = $dateo->format('r');
     return $r;
 }
 
@@ -56,9 +68,11 @@ function getArr() {
 }
 
 function getJSON() {
+    $o = new web_rand_seq2();
+    $o->lock();
     $rarr = getArr();
-    $o = new web_random();
-    $o->dbPut($rarr);
+    $o->put($rarr);
+    $o->unlock();
     $dbarr = $o->getA();
     popIsIP($dbarr);
     
@@ -97,24 +111,15 @@ public static function getIP() {
     return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'cli';
 }
 
-public function dbPut($dat) {
-
-    $ip = self::getIP();
-    $si = $this->getNextSequenceInfo();
-    $dat['seq'] = $si['seq'];
-    $dat['seq_since_mstime'] = $si['mstime'];
-    $dat['ip']  = $ip;
-    $this->col->insertOne($dat);
-}
     private function setCounter() {
 	$res = $this->ccoll->findOne();
 	if ($res) return;
 	$this->ccoll->insertOne(['_id' => 'notseq', 'seq' => 1, 'mstime' => time() * 1000]);
     }
     
-    private function getNextSequenceInfo() {
+    protected function getNextSequenceInfo() {
 	$ret = $this->ccoll->findOneAndUpdate([ '_id' => 'notseq' ], [ '$inc' => [ 'seq' => 1 ]]);
         return $ret;
-}
+    }
 
 }
