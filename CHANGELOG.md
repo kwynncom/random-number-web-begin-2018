@@ -1,3 +1,12 @@
+later that day, 9:31pm
+
+I integrated the time stamp counter / my new rdtscp extension.  I was about to do sorting by those numbers, and then 
+I realized I'd probably have to lock anyhow, so I lock the process.  
+
+I may display some version of those numbers at some point.
+
+I am also reformatting the CSS.
+
 2020/10/03 5:52pm EDT
 
 Will remove the original JS-only version:

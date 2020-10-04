@@ -43,7 +43,7 @@ function pop1() {
     byid('seq2').innerHTML  = seq1;
     byid('seqspan').innerHTML = ' since ' + new Date(arr[j].seq_since_mstime).toString();
     byid('cset').innerHTML  = ARR_C - j + ' / ' + ARR_C;
-    byid('isIP').innerHTML = (arr[j]['isIP'] ? '' : 'NOT '  ) + 'from your IP address'
+    byid('isIP').innerHTML = (arr[j]['isIP'] ? '' : 'NOT '  ) + 'from your IP addr'
     
     if (j === 0) byid('goforward').style.visibility = 'hidden';
     else         byid('goforward').style.visibility = 'visible';
@@ -64,9 +64,13 @@ function goforward() {
 
 </script>
 
+<style>
+    .arrows {  font-size: 500%; margin-top: -0.6em; margin-bottom: -0.5em; display: inline-block }
+</style>
+
 
 </head>
-<body>
+<body style=''>
 
 <div style='margin-bottom: 1ex'>
 <input type='button' value='again' onclick='history.go(0)' style='font-size: 130%' />
@@ -74,17 +78,22 @@ function goforward() {
 
 <div id='date'></div>
 <div style='margin-top: 0.2ex' >
+    <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
+    <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
-    <span id='isIP' ></span>
+
+
 </div>
 
 
-<div id='cset' style='margin-top: 2ex'></div>
-<div style='padding: 0; margin-bottom: -0.5ex; margin-top: -0.5ex; font-size: 500%'>
-<span onclick='goback()' id='goback'>&#8592;</span><span onclick='goforward()' id='goforward'>&#8594;</span>
+
+<div style='padding: 0; margin-bottom: -0.0ex; margin-top: -0.0ex;'>
+<span onclick='goback()' id='goback' class='arrows'>&#8592;</span>
+<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
+
 </div>
 
-<ol>
+<ol style='margin-top: 0'>
 
 <li id='e0'></li>
 <li id='e1'></li>
