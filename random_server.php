@@ -1,18 +1,20 @@
 <?php
 
 require_once('/opt/kwynn/kwutils.php');
-require_once('seq2.php');
+require_once('dao.php');
 
-function myri($max) { return random_int(1, $max); }
+class web_random {
 
-function myra($optin = false, $max = 100) {
+private static function randi($max) { return random_int(1, $max); }
+
+private static function grarr($optin = false, $max = 100) {
     $ro = new stdClass();
     
     if ($optin === 'ht') $opt = [ 1 => 'heads', 0 => 'tails'];
     else if (is_array($optin)) $opt = $optin;
     else $opt = false;
    
-    $ro->n  = myri($max);
+    $ro->n  = self::randi($max);
     $ro->me = $opt ? 1 - intval(round(($ro->n - 1)/ $max)) : '';
     $ro->o  = $opt ? $opt[$ro->me] : '';
     
@@ -22,104 +24,105 @@ function myra($optin = false, $max = 100) {
     return $ro;
 }
 
-function mymicrotime() {
+private static function mymicrotime() {
     $dateo = new DateTime();
     $s = $dateo->format('U.u');
-    $r['utimes'] = $s;
     $ts         = intval($dateo->format('U'));
-    $r['itime'] = $ts;
+    $r['tsdb'] = $ts;
     $f =  floatval($s);
-    $r['utimef'] = $f;
     $uonlyf = floatval('0.' . $dateo->format('u'));
-    $r['uonly']  = $uonlyf;
-    $pow6 =  pow(10,6);
-    $pow3 =  pow(10,3);
-    $uonlyi      = intval(round($uonlyf * $pow6, 6));
-    $utimei = $ts * $pow6 + $uonlyi;
-    $r['utimei']  = $utimei;
-    $r['mstime'] = intval(floor(($ts + $uonlyf) * $pow3));
-    $tsc = rdtscp();
-    $tick = $tsc[0];
-    $r['cpun'] = $tsc[1];
-    $r['tick'] = $tick;
-    $r['isaws'] = isAWS();
-    $r['datv']  = 2;
-    $r['r']     = $dateo->format('r');
+    $r['hronly']  = $uonlyf;
     return $r;
 }
 
-function getArr() {
+private static function getNSTime() {
+    
+    if (!function_exists('nanopk')) return false;
+    
+    $r = nanopk();
+    $ts = $r['U'];
+    $r['tsdb'] = $ts;
+    $r['hronly'] = floatval('0.' . $r['Unsonly']);
+    return $r;
+}
 
-    $r[] = myra('ht');
-    $r[] = myra([0 => 'hill', 1 => 'gpg']);
-    $r[] = myra(' hr', 12);
-    $r[] = myra('%');
-    $r[] = myra('ht');
-    $t1 = myra('ht');
-    $r[] = $t1;
-    if ($t1->me === 1) $r[] = myra(0, 2000);
-    else $r[] = myra(0, 300);
-    unset($t1);
-    for ($i=1; $i <= 3; $i++) $r[] = myra(0, 100);
-    unset($i);
-    $r['dateData'] = mymicrotime();
+private static function popCommonTime(&$r) {
+    $r['r']     = date('r', $r['tsdb']);
+}
+
+private static function gethrtime() {
+    
+    $r = self::getNSTime();
+    if (!$r) $r = self::mymicrotime();
+    self::popCommonTime($r);
     
     return $r;
 }
 
-function getJSON() {
-    $o = new web_rand_seq2();
+
+private static function getRandArr() {
+
+    $r[] = self::grarr('ht');
+    $r[] = self::grarr([0 => 'hill', 1 => 'gpg']);
+    $r[] = self::grarr(' hr', 12);
+    $r[] = self::grarr('%');
+    $r[] = self::grarr('ht');
+    $t1 = self::grarr('ht');
+    $r[] = $t1;
+    if ($t1->me === 1) $r[] = self::grarr(0, 2000);
+    else $r[] = self::grarr(0, 300);
+    unset($t1);
+    for ($i=1; $i <= 3; $i++) $r[] = self::grarr(0, 100);
+    unset($i);
+    return $r;
+}
+
+
+private static function pop() {
+    $o = new dao_web_random();
     $o->lock();
-    $rarr = getArr();
+    $rarr = [];
+    $rarr['rand'] = self::getRandArr();
+    $rarr['dateData'] = self::gethrtime();
+    $rarr['isaws'] = isAWS();
+    $rarr['datv']  = 3;
     $o->put($rarr);
     $o->unlock();
-    $dbarr = $o->getA();
-    popIsIP($dbarr);
+    return $o;
+}
+
+private static function getPublic($dao) {
     
+    static $myip = false;
+    
+    $prs = $dao->getA();
+    
+    if (!$myip) $myip = self::getIP();
+    
+    foreach($prs as $pr) {
+    	$pu['rand']    = $pr['rand'];
+	$pu['dhronly'] = sprintf('%0.9f',$pr['dateData']['hronly']);
+	$pu['dtime']   = self::dtime($pr['dateData']['tsdb']);
+	$pu['isIP']      = $pr['ip'] === $myip;
+	$pu['seq']     = $pr['seq'];
+	$pu['seq_since_mstime'] = $pr['seq_since_mstime'];
+	$pus[] = $pu;
+    }
+
+    return $pus;
+}
+
+private static function dtime($ts) {
+    return date('r' , $ts);
+}
+
+public static function getJSON() {
+    $dao = self::pop();
+    $dbarr = self::getPublic($dao);
     return json_encode($dbarr);
 }
 
-function popIsIP(&$arr) {
-    for ($i=0; $i < count($arr); $i++) {
-	$arr[$i]['isIP'] = $arr[$i]['ip'] === web_random::getIP();
-    }
-}
+public static function getIP() { return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'cli'; }
 
-class web_random {
-        
-    public function getA() {
-	$dat = $this->col->find([], ['sort' => ['seq' => -1]])->toArray();
-	return $dat;
-    }
-    
-    function __construct() {
-    $this->db  = 'random';
-    $this->cli = new MongoDB\Client('mongodb://127.0.0.1/', [], ['typeMap' => ['array' => 'array','document' => 'array', 'root' => 'array']]);
-    $this->col = $this->cli->selectCollection($this->db, $this->db);
-    $this->ccoll = $this->cli->selectCollection($this->db, 'counters');
-    $this->setCounter();
-    $this->clean();
-}
-
-private function clean() {
-    // db.getCollection('random').deleteMany({'dateData.itime' : {'$lt' : ISODate().getTime() }})
-    
-    $this->col->deleteMany(['dateData.itime' => ['$lt' => time() - 86400 * 2.5]]);
-}
-
-public static function getIP() {
-    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'cli';
-}
-
-    private function setCounter() {
-	$res = $this->ccoll->findOne();
-	if ($res) return;
-	$this->ccoll->insertOne(['_id' => 'notseq', 'seq' => 1, 'mstime' => time() * 1000]);
-    }
-    
-    protected function getNextSequenceInfo() {
-	$ret = $this->ccoll->findOneAndUpdate([ '_id' => 'notseq' ], [ '$inc' => [ 'seq' => 1 ]]);
-        return $ret;
-    }
 
 }

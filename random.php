@@ -19,8 +19,8 @@ var ARR_C = 0;
 var ARR_I = 0;
 
 function doit() {
-    var arrs = <?php echo getJSON(); ?>;
-    ARR_G  = arrs; // JSON.parse(arrs);
+    var arrs = <?php echo web_random::getJSON(); ?>;
+    ARR_G  = arrs;
     ARR_C  = ARR_G.length;
     pop1();
 }
@@ -32,11 +32,9 @@ function pop1() {
 
     var i=0;
     var e;
-    while (e = byid('e' + i)) e.innerHTML = arr[j][i++].s;
+    while (e = byid('e' + i)) e.innerHTML = arr[j]['rand'][i++].s;
 
-    var dateObject = new Date(arr[j].dateData.mstime);
-    var	dateReadable = dateObject.toString();
-    byid('date').innerHTML = 'created: ' + dateReadable + ' (+' + arr[j].dateData.uonly + 's)';
+    byid('date').innerHTML = 'created: ' + arr[j].dtime + ' (+' + arr[j].dhronly + 's)';
     
     const seq1 = 'seq #' + arr[j]['seq'];
     byid('seq1').innerHTML  = seq1;

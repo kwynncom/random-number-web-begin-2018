@@ -3,15 +3,20 @@
 require_once('/opt/kwynn/kwutils.php');
 require_once('random_server.php');
 
-class web_rand_seq2 extends web_random {
+class dao_web_random {
     
     const lfpath = '/tmp/kwynn_com_rand_seq_lock_begin_2020_1003_1';
     
     public function __construct($din = false, $test = false) {
-	parent::__construct();
+
 	$this->istest = $test;
-	// $this->put($din);
-	// $this->sort();
+	
+        $this->db  = 'random';
+	$this->cli = new MongoDB\Client('mongodb://127.0.0.1/', [], ['typeMap' => ['array' => 'array','document' => 'array', 'root' => 'array']]);
+	$this->col = $this->cli->selectCollection($this->db, $this->db);
+	$this->ccoll = $this->cli->selectCollection($this->db, 'counters');
+	$this->setCounter();
+	$this->clean();
     }
     
     public function lock() {
@@ -42,7 +47,7 @@ class web_rand_seq2 extends web_random {
 	
 	if (!$dat) return;
 	
-	$ip = self::getIP();
+	$ip = web_random::getIP();
 	$si = $this->getNextSequenceInfo();
 	$dat['seq'] = $si['seq'];
 	$dat['seq_since_mstime'] = $si['mstime'];
@@ -50,20 +55,23 @@ class web_rand_seq2 extends web_random {
 	$this->col->insertOne($dat);	
     }
     
-    private function sort() {
-	
-	$sq['dateData.utimei'] = 1;
-	$sq['dateData.tick'  ] = 1;
-	$sq['dateData.cpun'  ] = 1;
-	
-	
-	// $this->lock();
-	$res = $this->col->find(['dateData.datv' => 2], ['sort' => $sq])->toArray();
-	// $this->unlock();
-	
-	
-	
-	return;
+        public function getA() {
+	$dat = $this->col->find([], ['sort' => ['seq' => -1]])->toArray();
+	return $dat;
+    }
+
+private function clean() { $this->col->deleteMany(['dateData.tsdb' => ['$lt' => time() - 86400 * 2.5]]); }
+
+
+    private function setCounter() {
+	$res = $this->ccoll->findOne();
+	if ($res) return;
+	$this->ccoll->insertOne(['_id' => 'notseq', 'seq' => 1, 'mstime' => time() * 1000]);
+    }
+    
+    protected function getNextSequenceInfo() {
+	$ret = $this->ccoll->findOneAndUpdate([ '_id' => 'notseq' ], [ '$inc' => [ 'seq' => 1 ]]);
+        return $ret;
     }
     
 }
