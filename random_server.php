@@ -102,6 +102,7 @@ private static function getPublic($dao) {
     foreach($prs as $pr) {
     	$pu['rand']    = $pr['rand'];
 	$pu['dhronly'] = sprintf('%0.9f',$pr['dateData']['hronly']);
+	$pu['coren'] = $pr['dateData']['coren'];
 	$pu['dtime']   = self::dtime($pr['dateData']['tsdb']);
 	$pu['isIP']      = $pr['ip'] === $myip;
 	$pu['seq']     = $pr['seq'];

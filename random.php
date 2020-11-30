@@ -34,7 +34,7 @@ function pop1() {
     var e;
     while (e = byid('e' + i)) e.innerHTML = arr[j]['rand'][i++].s;
 
-    byid('date').innerHTML = 'created: ' + arr[j].dtime + ' (+' + arr[j].dhronly + 's)';
+    byid('date').innerHTML = 'created: ' + arr[j].dtime + ' (+' + arr[j].dhronly + 's, core #' + arr[j].coren + ')';
     
     const seq1 = 'seq #' + arr[j]['seq'];
     byid('seq1').innerHTML  = seq1;
@@ -111,7 +111,8 @@ function goforward() {
     <span id='seq2'></span><span id='seqspan' style = 'font-size: 70%; opacity: 0.7'></span>
 </div>
 
-<p><a href='random.html'>original JS-only</a></p>
+<p><a href='https://github.com/kwynncom/random-number-web-begin-2018' 
+      style='padding-right: 3.5em'>source code</a><a href='random.html'>original JS-only</a></p>
 
 </body>
 </html>

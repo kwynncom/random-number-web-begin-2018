@@ -1,3 +1,5 @@
+2020/11/29 8:42pm - Added core number.
+****************
 later that day, 9:31pm
 
 I integrated the time stamp counter / my new rdtscp extension.  I was about to do sorting by those numbers, and then 
