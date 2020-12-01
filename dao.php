@@ -2,10 +2,9 @@
 
 require_once('/opt/kwynn/kwutils.php');
 require_once('random_server.php');
+require_once('lock.php');
 
 class dao_web_random {
-    
-    const lfpath = '/tmp/kwynn_com_rand_seq_lock_begin_2020_1003_1';
     
     public function __construct($din = false, $test = false) {
 
@@ -17,30 +16,12 @@ class dao_web_random {
 	$this->ccoll = $this->cli->selectCollection($this->db, 'counters');
 	$this->setCounter();
 	$this->clean();
+	$this->locko = new lock_sem(__FILE__);
     }
     
-    public function lock() {
-	
-	$newf = !file_exists(self::lfpath);
-	
-	kwas($r = fopen(self::lfpath, 'w'), 'seq2 rand file open fail');
-	kwas(flock($r, LOCK_EX),'seq2 rand file lock fail');
-	if ($newf) {
-	    chmod(self::lfpath, 0660);
-	    kwas(chgrp(self::lfpath, "www-data"), 'chgrp failed rand seq2');
-	    
-	}
-	if ($this->istest) {
-	    sleep(4);
-	    echo 'unlock' . "\n";
-	}
-	
-	$this->lfileh = $r;
-	
-    }
-    
-    public function unlock() { kwas(flock($this->lfileh, LOCK_UN), 'unlock failed seq2 rand'); }
-    
+    public function   lock() { $this->locko->  lock();   }
+    public function unlock() { $this->locko->unlock();   }
+
     public static function test() { $o = new self(0, 1);     }
     
     public function put($dat) {

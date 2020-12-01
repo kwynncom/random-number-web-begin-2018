@@ -1,4 +1,4 @@
-2020/11/29 8:42pm - Added core number.
+2020/11/29 8:42pm - Added core number and source code link.
 ****************
 later that day, 9:31pm
 

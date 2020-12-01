@@ -1,4 +1,4 @@
 <?php
 
 require_once('random_server.php');
-web_random::getJSON();
+echo(web_random::getJSON());
