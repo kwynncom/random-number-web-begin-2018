@@ -2,7 +2,7 @@
 
 require_once('/opt/kwynn/kwutils.php');
 require_once('random_server.php');
-require_once('lock.php');
+require_once('/opt/kwynn/lock.php');
 
 class dao_web_random {
     
@@ -16,7 +16,7 @@ class dao_web_random {
 	$this->ccoll = $this->cli->selectCollection($this->db, 'counters');
 	$this->setCounter();
 	$this->clean();
-	$this->locko = new lock_sem(__FILE__);
+	$this->locko = new sem_lock(__FILE__);
     }
     
     public function   lock() { $this->locko->  lock();   }
