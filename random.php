@@ -34,7 +34,7 @@ function pop1() {
     var e;
     while (e = byid('e' + i)) e.innerHTML = arr[j]['rand'][i++].s;
 
-    byid('date').innerHTML = 'created: ' + arr[j].dtime + ' (+' + arr[j].dhronly + 's, core #' + arr[j].coren + ')';
+    byid('date').innerHTML = 'created: ' + arr[j].dtime + ' (+' + arr[j].dhronly + 's, core #' + arr[j].pid + ')';
     
     const seq1 = 'seq #' + arr[j]['seq'];
     byid('seq1').innerHTML  = seq1;

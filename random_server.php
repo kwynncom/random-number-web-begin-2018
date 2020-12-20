@@ -39,10 +39,10 @@ private static function getNSTime() {
     
     if (!function_exists('nanopk')) return false;
     
-    $r = nanopk();
+    $r = nanopk(NANOPK_U | NANOPK_UNSOI | NANOPK_TSC | NANOPK_PID | NANOPK_UNS);
     $ts = $r['U'];
     $r['tsdb'] = $ts;
-    $r['hronly'] = floatval('0.' . $r['Unsonly']);
+    $r['hronly'] = floatval('0.' . $r['Unsoi']);
     return $r;
 }
 
@@ -102,7 +102,10 @@ private static function getPublic($dao) {
     foreach($prs as $pr) {
     	$pu['rand']    = $pr['rand'];
 	$pu['dhronly'] = sprintf('%0.9f',$pr['dateData']['hronly']);
-	$pu['coren'] = $pr['dateData']['coren'];
+	
+	if (isset($pr['dateData']['coren'])) $pr['dateData']['pid'] = $pr['dateData']['coren'];
+	
+	$pu['pid']    = $pr['dateData']['pid'];
 	$pu['dtime']   = self::dtime($pr['dateData']['tsdb']);
 	$pu['isIP']      = $pr['ip'] === $myip;
 	$pu['seq']     = $pr['seq'];
