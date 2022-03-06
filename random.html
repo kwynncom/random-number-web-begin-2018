@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>random</title>
+
+<script>
+
+function byid(id) { return document.getElementById(id); }
+
+window.onload = doit;
+
+function doit() {
+	var arr = new Uint32Array(15);
+	window.crypto.getRandomValues(arr);
+
+	var i=0;
+	byid('e' + i).innerHTML = arr[i] % 2 ? 'heads' : 'tails'; i++;
+	byid('e' + i).innerHTML = arr[i] % 2 ? 'hill'  : 'gpg'; i++;
+	byid('e' + i).innerHTML = arr[i] % 12  + 1; i++;
+	byid('e' + i).innerHTML = arr[i] % 100 + 1 + '%'; i++;
+
+	byid('e' + i).innerHTML = arr[i] % 2 ? 'heads' : 'tails'; i++;
+	var which = arr[i] % 2 ? 'heads' : 'tails';
+	byid('e' + i).innerHTML = which; i++;
+	var count = which === 'heads' ? arr[i] % 2000 : arr[i] % 300;
+	byid('e' + i).innerHTML = count; i++;
+	byid('e' + i).innerHTML = arr[i] % 100 + 1; i++;
+	byid('e' + i).innerHTML = arr[i] % 100 + 1; i++;
+	byid('e' + i).innerHTML = arr[i] % 100 + 1; i++;
+
+	var dateObject = new Date();
+	var	dateReadable = dateObject.toString();
+	byid('date').innerHTML = dateReadable;
+}
+
+</script>
+
+
+</head>
+<body>
+
+<div id='date'></div>
+
+<input type='button' value='again' onclick='doit()' style='font-size: 130%' />
+
+<ol>
+
+<li id='e0'></li>
+<li id='e1'></li>
+<li id='e2'></li>
+<li id='e3'></li>
+<li id='e4'></li>
+<li id='e5'></li>
+<li id='e6'></li>
+
+<li id='e7' style='margin-top: 2ex'></li>
+<li id='e8'></li>
+<li id='e9'></li>
+
+</ol>
+
+
+
+</body>
+</html>
+
+
