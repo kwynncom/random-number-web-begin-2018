@@ -63,13 +63,23 @@ function goforward() {
 </script>
 
 <style>
-    .arrows {  font-size: 500%; margin-top: -0.6em; margin-bottom: -0.5em; display: inline-block }
+.arrows {  
+	display: inline-block; 
+	transform: scale(3,3);
+	width: 3.5em;
+	vertical-align: middle;
+
+}
+
+.arp {
+	margin-left: 4em;
+	height: 2em;
+	margin-top: 0.0em;
+	margin-bottom: -0.32em;
+}
 </style>
-
-
 </head>
 <body style=''>
-
 <div style='margin-bottom: 1ex'>
 <input type='button' value='again' onclick='history.go(0)' style='font-size: 130%' />
 </div>
@@ -79,16 +89,10 @@ function goforward() {
     <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
     <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
-
-
 </div>
-
-
-
-<div style='padding: 0; margin-bottom: -0.0ex; margin-top: -0.0ex;'>
-<span onclick='goback()' id='goback' class='arrows'>&#8592;</span>
-<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
-
+<div class='arp'>
+	<span onclick='goback()' id='goback' class='arrows'>&#8592;</span>
+	<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
 </div>
 
 <ol style='margin-top: 0'>
