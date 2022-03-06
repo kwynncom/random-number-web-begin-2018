@@ -67,15 +67,14 @@ function goforward() {
 	display: inline-block; 
 	transform: scale(3,3);
 	width: 3.5em;
-	vertical-align: middle;
-
+/*	vertical-align: middle; */
 }
 
 .arp {
 	margin-left: 4em;
 	height: 2em;
-	margin-top: 0.0em;
-	margin-bottom: -0.32em;
+	margin-top: 0em;
+	margin-bottom: -0.16em;
 }
 </style>
 </head>
