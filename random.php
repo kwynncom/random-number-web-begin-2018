@@ -63,57 +63,18 @@ function goforward() {
 </script>
 
 <style>
-.arp { 
-	display: inline-block;
-	height: 1.5em;
-	position: relative;
-}
-
-.arrows {  
-	display: inline-block; 
-	font-size: 10vh;
-	line-height: 0.3em; /*  v-a bottom or even top or text-top is tempting for desktop, but don't do it because it messes up mobile. *//* vertical-align: text-top; */
-	margin-right: 0.2ex;
-	position: relative;
-	top: -0.0ex;
-}
-
-.seqd { 
-	margin-top:    0.2ex;
-	margin-bottom: 0.0ex; 
-}
-
-#l10 { 
-	margin-top: 0; 
-	position: relative; 
-	font-size: 2.95vh;
-	padding-left: 1.5em;
-}
-
-.gp10 {
-	position: relative;
-	font-size: 0pt;
-}
-/*
-@media only screen and (max-height: 1290px) {
-	.arp { 
-		position: relative;
-		top: -1.5ex;
-		margin-bottom: 0; 
-		margin-top: 0ex;
-		display: inline-block;
-		line-height: 1.0em;
-	}
-	
-	#l10 {
-		margin-top: 0;
-		position: relative;
-		top: -2ex;
-		
-	}
-
-}
-*/
+.seqd { margin-top:    0.2ex;
+		margin-bottom: 0.0ex;	 }
+.arp    { display: inline-block; }
+.arrows { display: inline-block; 
+		  font-size: 10vh;
+		  line-height: 0.0vh;
+		  margin-right: 0.2ex;
+		  top: -0.0ex; }
+#l10 {	  margin-top: 0; 
+		  font-size: 2.95vh;
+		  padding-left: 1.5em;
+}.gp10 {  font-size: 0pt; }
 </style>
 </head>
 <body>
@@ -126,11 +87,10 @@ function goforward() {
     <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
     <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
-</div>
-	<div class='gp10'>
+</div><div class='gp10'>
 <div class='arp'>
-	<span onclick='goback()'    id='goback'    class='arrows'>&#8592;</span><!-- no whitespace allowed!!!
-	--><span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
+	<span onclick='goback()'    id='goback'    class='arrows'>&#8592;</span>
+	<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
 </div>
 
 <ol id='l10'>
