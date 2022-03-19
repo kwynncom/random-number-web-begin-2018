@@ -63,18 +63,20 @@ function goforward() {
 </script>
 
 <style>
+@media only screen and (min-width: 730px)  { .arrows { line-height: 1ex; }}
+@media only screen and (max-width: 729px)  { .arrows { line-height: 0ex; }}
 .seqd { margin-top:    0.2ex;
 		margin-bottom: 0.0ex;	 }
 .arp    { display: inline-block; }
 .arrows { display: inline-block; 
-		  font-size: 10vh;
-		  line-height: 0.0vh;
+		  font-size: 40pt;
 		  margin-right: 0.2ex;
 		  top: -0.0ex; }
 #l10 {	  margin-top: 0; 
-		  font-size: 2.95vh;
+		  font-size: 16px;
 		  padding-left: 1.5em;
-}.gp10 {  font-size: 0pt; }
+}
+.gp10 { font-size: 0pt; }
 </style>
 </head>
 <body>
@@ -87,14 +89,14 @@ function goforward() {
     <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
     <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
-</div><div class='gp10'>
+</div>
+
+<div class='gp10'>
 <div class='arp'>
 	<span onclick='goback()'    id='goback'    class='arrows'>&#8592;</span>
 	<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
 </div>
-
 <ol id='l10'>
-
 <li id='e0'></li>
 <li id='e1'></li>
 <li id='e2'></li>
@@ -102,18 +104,13 @@ function goforward() {
 <li id='e4'></li>
 <li id='e5'></li>
 <li id='e6'></li>
-
 <li id='e7' style='margin-top: 2ex'></li>
 <li id='e8'></li>
 <li id='e9'></li>
-
 </ol>
+</div> <!-- gp10 for font-size of 0 -->
 
-	</div>
-
-<div>
-    <span id='seq2'></span><span id='seqspan' style = 'font-size: 70%; opacity: 0.7'></span>
-</div>
+<div><span id='seq2'></span><span id='seqspan' style = 'font-size: 70%; opacity: 0.7'></span></div>
 
 <p><a href='https://github.com/kwynncom/random-number-web-begin-2018' 
       style='padding-right: 3.5em'>source code</a><a href='random.html'>original JS-only</a></p>
