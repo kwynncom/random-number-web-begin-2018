@@ -63,19 +63,46 @@ function goforward() {
 </script>
 
 <style>
-.arrows {  
-	display: inline-block; 
-	transform: scale(3,3);
-	width: 3.5em;
-/*	vertical-align: middle; */
+.arp { 
+	margin-bottom: 0; 
+	margin-top: 0ex;
+	display: inline-block;
+	height: 1.5em;
 }
 
-.arp {
-	margin-left: 4em;
-	height: 2em;
-	margin-top: 0em;
-	margin-bottom: -0.16em;
+.arrows {  
+	display: inline-block; 
+	font-size: 400%;
+	line-height: 0.3em; /*  v-a bottom or even top or text-top is tempting for desktop, but don't do it because it messes up mobile. *//* vertical-align: text-top; */
+	margin-right: 0.2ex;
+	position: relative;
+	top: -0.0ex;
 }
+
+.seqd { 
+	margin-top:    0.2ex;
+	margin-bottom: 0.0ex; 
+}
+
+@media only screen and (max-height: 1290px) {
+	.arp { 
+		position: relative;
+		top: -1.5ex;
+		margin-bottom: 0; 
+		margin-top: 0ex;
+		display: inline-block;
+		line-height: 1.0em;
+	}
+	
+	#l10 {
+		margin-top: 0;
+		position: relative;
+		top: -2ex;
+		
+	}
+
+}
+
 </style>
 </head>
 <body style=''>
@@ -84,17 +111,17 @@ function goforward() {
 </div>
 
 <div id='date'></div>
-<div style='margin-top: 0.2ex' >
+<div class='seqd' >
     <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
     <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
 </div>
 <div class='arp'>
-	<span onclick='goback()' id='goback' class='arrows'>&#8592;</span>
-	<span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
+	<span onclick='goback()'    id='goback'    class='arrows'>&#8592;</span><!-- no whitespace allowed!!!
+	--><span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
 </div>
 
-<ol style='margin-top: 0'>
+<ol id='l10'>
 
 <li id='e0'></li>
 <li id='e1'></li>
