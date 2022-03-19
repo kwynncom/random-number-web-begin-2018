@@ -64,15 +64,14 @@ function goforward() {
 
 <style>
 .arp { 
-	margin-bottom: 0; 
-	margin-top: 0ex;
 	display: inline-block;
 	height: 1.5em;
+	position: relative;
 }
 
 .arrows {  
 	display: inline-block; 
-	font-size: 400%;
+	font-size: 10vh;
 	line-height: 0.3em; /*  v-a bottom or even top or text-top is tempting for desktop, but don't do it because it messes up mobile. *//* vertical-align: text-top; */
 	margin-right: 0.2ex;
 	position: relative;
@@ -84,6 +83,18 @@ function goforward() {
 	margin-bottom: 0.0ex; 
 }
 
+#l10 { 
+	margin-top: 0; 
+	position: relative; 
+	font-size: 2.95vh;
+	padding-left: 1.5em;
+}
+
+.gp10 {
+	position: relative;
+	font-size: 0pt;
+}
+/*
 @media only screen and (max-height: 1290px) {
 	.arp { 
 		position: relative;
@@ -102,10 +113,10 @@ function goforward() {
 	}
 
 }
-
+*/
 </style>
 </head>
-<body style=''>
+<body>
 <div style='margin-bottom: 1ex'>
 <input type='button' value='again' onclick='history.go(0)' style='font-size: 130%' />
 </div>
@@ -116,6 +127,7 @@ function goforward() {
     <span id='isIP' style='padding-left: 0.2em' ></span>
     <span id='seq1'></span>
 </div>
+	<div class='gp10'>
 <div class='arp'>
 	<span onclick='goback()'    id='goback'    class='arrows'>&#8592;</span><!-- no whitespace allowed!!!
 	--><span onclick='goforward()' id='goforward' class='arrows'>&#8594;</span>
@@ -136,6 +148,8 @@ function goforward() {
 <li id='e9'></li>
 
 </ol>
+
+	</div>
 
 <div>
     <span id='seq2'></span><span id='seqspan' style = 'font-size: 70%; opacity: 0.7'></span>
