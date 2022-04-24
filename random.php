@@ -69,7 +69,7 @@ function goforward() {
 		margin-bottom: 0.0ex;	 }
 .arp    { display: inline-block; }
 .arrows { display: inline-block; 
-		  font-size: 40pt;
+		  font-size: 60pt;
 		  margin-right: 0.2ex;
 		  top: -0.0ex; }
 #l10 {	  margin-top: 0; 
