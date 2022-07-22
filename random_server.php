@@ -106,7 +106,7 @@ private static function getPublic($dao) {
 	if (isset($pr['dateData']['coren'])) $pr['dateData']['pid'] = $pr['dateData']['coren'];
 	
 	$pidr = kwifs($pr, 'dateData', 'pid');
-	$pid  = $pidr ? $pidr : '?';
+	$pid  = is_integer($pidr) ? $pidr : '?';
 	$pu['pid']    = $pid;
 	$pu['dtime']   = self::dtime($pr['dateData']['tsdb']);
 	$pu['isIP']      = $pr['ip'] === $myip;
