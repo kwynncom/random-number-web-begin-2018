@@ -24,6 +24,12 @@ class dao_web_random {
 
     public static function test() { $o = new self(0, 1);     }
     
+	public function getPrev(int $pUns) {
+		// I am now assuming Uns; perhaps microtime delivers Uns. Don't remember, don't care right now.
+		return $this->col->findOne(['dateData.Uns' => ['$lt' => $pUns]], ['sort' => ['dateData.Uns' => -1]]);
+		
+	}
+	
     public function put($dat) {
 	
 	if (!$dat) return;

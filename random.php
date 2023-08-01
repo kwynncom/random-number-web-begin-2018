@@ -19,7 +19,9 @@ var ARR_C = 0;
 var ARR_I = 0;
 
 function doit() {
-    var arrs = <?php echo web_random::getJSON(); ?>;
+    var arrs = <?php 
+	echo web_random::getJSON(); 
+	?>;
     ARR_G  = arrs;
     ARR_C  = ARR_G.length;
     pop1();
@@ -38,6 +40,7 @@ function pop1() {
     
     const seq1 = 'seq #' + arr[j]['seq'];
     byid('seq1').innerHTML  = seq1;
+	byid('prhu').innerHTML = prhuf(arr[j]);
     byid('seq2').innerHTML  = seq1;
     byid('seqspan').innerHTML = ' since ' + new Date(arr[j].seq_since_mstime).toString();
     byid('cset').innerHTML  = ARR_C - j + ' / ' + ARR_C;
@@ -49,6 +52,12 @@ function pop1() {
     if (j === ARR_C - 1) byid('goback').style.visibility = 'hidden';
     else byid('goback').style.visibility = 'visible';
 
+}
+
+function prhuf(a) {
+	const t = a['prhu'];
+	if (!t) return '(none)';
+	else return t;
 }
 
 function goback() {
@@ -88,7 +97,8 @@ function goforward() {
 <div class='seqd' >
     <span id='cset' style='padding-left: 0ex; font-size: 110%; font-weight: bold'></span>
     <span id='isIP' style='padding-left: 0.2em' ></span>
-    <span id='seq1'></span>
+    <span id='seq1'></span>, 
+	prev <span id='prhu'></span> ago
 </div>
 
 <div class='gp10'>

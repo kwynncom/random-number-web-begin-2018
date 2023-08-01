@@ -78,16 +78,47 @@ private static function getRandArr() {
 }
 
 
+private static function getSincePrevHu(dao_web_random $o, int $cUns) : string {
+	$pa = $o->getPrev($cUns);
+	$p = kwifs($pa, 'dateData', 'Uns');
+	if (!$p) return '(none)';
+	$d = (float)(($cUns - $p) / M_BILLION);
+	return self::hu20($d);
+
+}
+
+private static function hu20(float $d) {
+	if ($d  <  60) return sprintf('%0.1f', $d) . 's';
+	$d /= 60; // min
+	if ($d  <  60) return sprintf('%0.1f', $d) . ' min';
+	$d /= 60; // hr
+	if ($d < 24) return   sprintf('%0.1f', $d) . ' hrs';
+	$d /= 24; // days
+	if ($d < 8) return sprintf('%0.2f', $d) . ' days';
+	return round($d) . ' days';
+}
+
+public static function testHu() {
+	if (!iscli()) return;
+	$a = [0.2, 0.8, 1.1, 10, 40, 200, 500, 5000, 50000, 86400, 86400 * 1.5, 86400 * 5, 86400 * 10, 86400 * 100];
+	foreach($a as $x) {
+		echo(self::hu20($x) . "\n");
+	}
+}
+
 private static function pop() {
     $o = new dao_web_random();
-    $o->lock();
     $rarr = [];
-    $rarr['rand'] = self::getRandArr();
+    $o->lock();
+	$rarr['rand'] = self::getRandArr();
     $rarr['dateData'] = self::gethrtime();
-    $rarr['isaws'] = isAWS();
-    $rarr['datv']  = 3;
-    $o->put($rarr);
     $o->unlock();
+	$rarr['isaws'] = isAWS();
+    $rarr['datv']  = 3;
+	
+	// given the way I'm doing this, I don't need to send in the current timestamp, but I will
+	$tprhu = $rarr['prhu'] = self::getSincePrevHu($o, $rarr['dateData']['Uns']);
+	$o->put($rarr);
     return $o;
 }
 
@@ -111,6 +142,9 @@ private static function getPublic($dao) {
 	$pu['dtime']   = self::dtime($pr['dateData']['tsdb']);
 	$pu['isIP']      = $pr['ip'] === $myip;
 	$pu['seq']     = $pr['seq'];
+	
+	$prhu = kwifs($pr, 'prhu', ['kwiff' => '(none)']);
+	$pu['prhu'] = $prhu;
 	$pu['seq_since_mstime'] = $pr['seq_since_mstime'];
 	$pus[] = $pu;
     }
@@ -125,10 +159,12 @@ private static function dtime($ts) {
 public static function getJSON() {
     $dao = self::pop();
     $dbarr = self::getPublic($dao);
-    return json_encode($dbarr);
+    return json_encode($dbarr, JSON_PRETTY_PRINT);
 }
 
 public static function getIP() { return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'cli'; }
 
 
-}
+} // class
+
+if (didCLICallMe(__FILE__)) web_random::testHu();
