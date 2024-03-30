@@ -5,7 +5,14 @@ require_once('random_server.php');
 require_once('/opt/kwynn/lock.php');
 
 class dao_web_random {
-    
+
+    private $istest;
+    private $db;
+    private $cli;
+    private $col;
+    private $ccoll;
+    private $locko;
+
     public function __construct($din = false, $test = false) {
 
 	$this->istest = $test;
